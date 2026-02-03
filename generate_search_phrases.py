@@ -58,10 +58,11 @@ def extract_phrases(output: str) -> list[str]:
 
 def run_model(model: str, prompt: str) -> list[str]:
     result = subprocess.run(
-        ["ollama", "run", model, "--prompt", prompt],
+        ["ollama", "run", model],
         check=True,
         text=True,
         capture_output=True,
+        input=prompt + "\n",
     )
     return extract_phrases(result.stdout)
 
