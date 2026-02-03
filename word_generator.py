@@ -4,6 +4,7 @@ A tool to generate relevant search keywords using Ollama AI
 """
 
 import os
+import sys
 import json
 from typing import List, Dict, Optional
 from dotenv import load_dotenv
@@ -59,11 +60,11 @@ class WordGenerator:
             return keywords[:count]
             
         except ImportError:
-            print("Warning: ollama package not installed. Using fallback method.")
+            print("Warning: ollama package not installed. Using fallback method.", file=sys.stderr)
             return self._fallback_generation(topic, context, count)
         except Exception as e:
-            print(f"Error generating keywords with Ollama: {e}")
-            print("Using fallback method...")
+            print(f"Error generating keywords with Ollama: {e}", file=sys.stderr)
+            print("Using fallback method...", file=sys.stderr)
             return self._fallback_generation(topic, context, count)
     
     def _build_prompt(self, topic: str, context: str, count: int) -> str:
@@ -187,7 +188,7 @@ Keywords with synonyms:"""
             return self._parse_synonym_response(response['message']['content'])
             
         except Exception as e:
-            print(f"Error: {e}. Using fallback.")
+            print(f"Error: {e}. Using fallback.", file=sys.stderr)
             keywords = self.generate_keywords(topic, count=count)
             return {k: [k] for k in keywords}
     
@@ -233,10 +234,12 @@ def main():
     
     generator = WordGenerator(model=args.model)
     
-    print(f"Generating keywords for: '{args.topic}'")
-    print(f"Context: {args.context}")
-    print(f"Using model: {generator.model}")
-    print("-" * 50)
+    # Only show info messages if not JSON output
+    if args.output != 'json':
+        print(f"Generating keywords for: '{args.topic}'")
+        print(f"Context: {args.context}")
+        print(f"Using model: {generator.model}")
+        print("-" * 50)
     
     if args.synonyms:
         results = generator.generate_with_synonyms(args.topic, args.count)
@@ -254,7 +257,8 @@ def main():
         if args.output == 'json':
             print(json.dumps(keywords, indent=2))
         else:
-            print("\nGenerated keywords:")
+            if args.output != 'json':
+                print("\nGenerated keywords:")
             for i, keyword in enumerate(keywords, 1):
                 print(f"{i}. {keyword}")
 
