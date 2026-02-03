@@ -128,6 +128,16 @@ class TestWordGenerator(unittest.TestCase):
         # Check for duplicates (case-insensitive)
         lowercase_keywords = [k.lower() for k in keywords]
         self.assertEqual(len(lowercase_keywords), len(set(lowercase_keywords)))
+    
+    def test_fallback_deduplication(self):
+        """Test that fallback generation properly deduplicates keywords"""
+        # Use a topic that will naturally produce duplicates in fallback mode
+        keywords = self.generator._fallback_generation("test test", "general", 20)
+        
+        # Verify no duplicates exist (case-insensitive)
+        lowercase_keywords = [k.lower() for k in keywords]
+        self.assertEqual(len(lowercase_keywords), len(set(lowercase_keywords)),
+                        "Fallback generation should not produce duplicate keywords")
 
 
 class TestPromptBuilding(unittest.TestCase):
