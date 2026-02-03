@@ -5,6 +5,7 @@ Automatically generate words for searching.
 
 Script dùng Ollama local để tạo cụm từ tìm kiếm. Kết quả chỉ gồm các cụm từ, mỗi dòng một cụm.
 Mặc định tạo 50 cụm từ và lưu vào thư mục `text/YYYYMMDD` theo tên `YYYYMMDD_###.txt`.
+Khi chạy sẽ hiển thị danh sách model local để bạn chọn (nhập số thứ tự), hoặc Enter để dùng tất cả.
 
 ```bash
 python generate_search_phrases.py
@@ -20,8 +21,8 @@ Ngôn ngữ: ngẫu nhiên trong 3 ngôn ngữ (Tiếng Việt, Tiếng Anh, Ti�
 Tùy chọn:
 - `--topic` chủ đề (mặc định: `random`).
 - `--count` số cụm từ cần tạo (mặc định: `50`).
-- `--output` đường dẫn file txt đầu ra (bỏ trống để tự tạo trong `text`).
-- `--models` chỉ định danh sách mô hình (mặc định dùng tất cả mô hình có sẵn).
+- `--output` đường dẫn file txt đầu ra (bỏ trống để tự tạo trong `text/YYYYMMDD`).
+- `--models` chỉ định danh sách mô hình (bỏ qua bước chọn model).
 - `--dry-run` xem prompt và danh sách mô hình mà không chạy Ollama.
 
 ## Batch chạy nhiều lần
